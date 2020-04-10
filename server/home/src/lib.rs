@@ -1,6 +1,5 @@
 #![recursion_limit = "1024"]
-extern crate yew;
-extern crate yew_router;
+extern crate seed;
 #[macro_use] extern crate stdweb;
 extern crate wasm_bindgen;
 #[macro_use] extern crate lazy_static;
@@ -12,16 +11,21 @@ extern crate plans;
 mod transaction;
 mod transactions;
 mod budget;
-mod router;
-mod userprofile;
+//mod router;
+//mod userprofile;
 
 use wasm_bindgen::prelude::*;
+use seed::*;
+pub use plans::{
+    *,
+    currency::*,
+};
+pub use crate::{
+    budget::*,
+};
 
-#[wasm_bindgen]
-pub fn run_app() -> Result<(), JsValue> {
-    yew::initialize();
-    yew::App::<router::ClientRouter>::new()
-        .mount_to_body();
-    yew::run_loop();
-    Ok(())
+#[wasm_bindgen(start)]
+pub fn start() -> Result<(), JsValue> {
+    App::builder(BudgetView::<Euro>::update, BudgetView::<Euro>::view)
+        .build_and_run()
 }

@@ -2,9 +2,11 @@ use plans::{
     currency::*,
     transaction::Transaction,
 };
-use yew::{
+use seed::{
     *,
+    prelude::*,
 };
+use std::ops::Deref;
 
 pub struct TransactionView<C: 'static + Currency> {
     model: Transaction<C>,
@@ -16,32 +18,32 @@ impl<C: 'static + Currency> From<Transaction<C>> for TransactionView<C> {
         }
     }
 }
-impl<C: 'static + Currency> yew::Component for TransactionView<C> {
-    type Message = ();
-    type Properties = ();
-
-    fn create(_props: Self::Properties, _link: yew::ComponentLink<Self>) -> Self {
+impl<C: 'static + Currency> Deref for TransactionView<C> {
+    type Target = Transaction<C>;
+    fn deref(&self) -> &<Self as Deref>::Target {
+        &self.model
+    }
+}
+impl<C: 'static + Currency> Default for TransactionView<C> {
+    fn default() -> Self {
         Self::from(Transaction::default())
     }
-    fn update(&mut self, _msg: Self::Message) -> yew::ShouldRender {
-        true
-    }
-    fn view(&self) -> yew::Html {
-        html!{
-            <tr class="transaction-row">
-                <td class="transaction-cell">{
-                    self.model.get_date().map(|d| format!("{}", d)).unwrap_or("unknown".into())
-                }</td>
-                <td class="transaction-cell">{
-                    self.model.get_amount().to_string()
-                }</td>
-                <td class="transaction-cell">{
-                    self.model.get_recipient().map(|s| s.to_string()).unwrap_or("None".into())
-                }</td>
-                <td class="transaction-cell">{
-                    self.model.get_purposes().map(|ps| ps.to_string()).unwrap_or("None".into())
-                }</td>
-                </tr>
-        }
-    }
+}
+pub fn update<C: 'static + Currency>(msg: (), model: &mut TransactionView<C>, _orders: &mut impl Orders<()>) {
+}
+pub fn view<C: 'static + Currency>(model: &TransactionView<C>) -> impl View<()> {
+    tr![class!{"transaction-row"},
+        td![class!{"transaction-cell"},
+            model.model.get_date().map(|d| format!("{}", d)).unwrap_or("unknown".into())
+        ],
+        td![class!{"transaction-cell"},
+            model.model.get_amount().to_string()
+        ],
+        td![class!{"transaction-cell"},
+            model.model.get_recipient().map(|s| s.to_string()).unwrap_or("None".into())
+        ],
+        td![class!{"transaction-cell"},
+            model.model.get_purposes().map(|ps| ps.to_string()).unwrap_or("None".into())
+        ],
+    ]
 }
