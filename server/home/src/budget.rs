@@ -30,17 +30,15 @@ impl<C: 'static + Currency> Default for BudgetView<C> {
         }
     }
 }
-impl<C: 'static + Currency> BudgetView<C> {
-    pub fn update(msg: Msg, model: &mut Self, _orders: &mut impl Orders<Msg>) {
-    }
-    pub fn view(&self) -> impl View<Msg> {
-        div![class!{"budget-container"},
-            h1![class!{"budget-heading"},
-                self.model.name()
-            ],
-            TransactionsView::from(self.model.transactions.clone())
-        ]
-    }
+pub fn update<C: 'static + Currency>(msg: Msg, model: &mut BudgetView<C>, _orders: &mut impl Orders<Msg>) {
+}
+pub fn view<C: 'static + Currency>(model: &BudgetView<C>) -> impl View<Msg> {
+    div![class!{"budget-container"},
+        h1![class!{"budget-heading"},
+            model.model.name()
+        ],
+        TransactionsView::from(model.model.transactions.clone())
+    ]
 }
 //pub struct BudgetView<C: 'static + Currency> {
 //    link: ComponentLink<Self>,

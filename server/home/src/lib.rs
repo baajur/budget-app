@@ -26,6 +26,6 @@ pub use crate::{
 
 #[wasm_bindgen(start)]
 pub fn start() -> Result<(), JsValue> {
-    App::builder(BudgetView::<Euro>::update, BudgetView::<Euro>::view)
+    App::builder(budget::update::<Euro>, budget::view::<Euro>)
         .build_and_run()
 }

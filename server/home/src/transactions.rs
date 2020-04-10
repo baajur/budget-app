@@ -34,23 +34,23 @@ impl<C: 'static + Currency> Default for TransactionsView<C> {
         Self::from(Transactions::from(Vec::new()))
     }
 }
-    pub fn update<C: 'static + Currency>(msg: (), model: &mut TransactionsView<C>, _orders: &mut impl Orders<()>) {
-    }
-    pub fn view<C: 'static + Currency>(model: &TransactionsView<C>) -> impl View<()> {
-        table![class!{"transaction-table"},
-            caption![class!{"transaction-caption"},
-                "Your Transactions"
-            ],
-            tr![class!{"transaction-row"},
-                th![class!{"transaction-header"}, "Date" ],
-                th![class!{"transaction-header"}, "Amount" ],
-                th![class!{"transaction-header"}, "Partner" ],
-                th![class!{"transaction-header"}, "Purposes" ],
-            ],
-            model.model.iter().map(|t|
-                div![
-                    TransactionView::from(t.clone())
-                ]
-            )
-        ]
-    }
+pub fn update<C: 'static + Currency>(msg: (), model: &mut TransactionsView<C>, _orders: &mut impl Orders<()>) {
+}
+pub fn view<C: 'static + Currency>(model: &TransactionsView<C>) -> impl View<()> {
+    table![class!{"transaction-table"},
+        caption![class!{"transaction-caption"},
+            "Your Transactions"
+        ],
+        tr![class!{"transaction-row"},
+            th![class!{"transaction-header"}, "Date" ],
+            th![class!{"transaction-header"}, "Amount" ],
+            th![class!{"transaction-header"}, "Partner" ],
+            th![class!{"transaction-header"}, "Purposes" ],
+        ],
+        model.model.iter().map(|t|
+            div![
+                TransactionView::from(t.clone())
+            ]
+        )
+    ]
+}
